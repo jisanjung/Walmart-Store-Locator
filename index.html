@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        <title>Walmart Store Locator</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <!--header-->
+        <header class="test">
+            <div class="logo"><img src="images/icons8-walmart-48.png" alt="Walmart Logo"></div>
+        </header>
+
+        <!--zip code input-->
+        <div class="search test">
+            <input type="text" placeholder="Enter Zip Code" pattern="[0-9]{5}" id="zipInput">
+            <button type="button" id="btn">search</button>
+        </div>
+
+        <!--map-->
+        <div id="mapid" class="test"></div>
+
+        <!--list of locations-->
+        <div class="location-list test"></div>
+
+        <!--javascript-->
+        <script src="script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,27 @@
+/* global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+.test {
+    border: solid 1px red;
+}
+/* header */
+header {
+    min-height: 10vh;
+}
+/* zip code input */
+.search {
+    height: 7vh;
+}
+/* map */
+#mapid {
+    height: 30vh;
+}
+/* list of locations */
+.location-list {
+    height: 53vh;
+    overflow: scroll;
+}
