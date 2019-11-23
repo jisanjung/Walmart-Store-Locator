@@ -5,21 +5,87 @@
     box-sizing: border-box;
     font-family: 'Source Sans Pro', sans-serif;
 }
+.grid-wrap {
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(20px, auto);
+}
 .test {
     border: solid 1px red;
 }
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.horzontal-center {
+    position: absolute;
+    left: 50%;
+    transform: translateZ(-50%);
+}
+.center-all {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
 /* header */
 header {
     min-height: 10vh;
+    background-color: #041E42;
+    position: relative;
 }
+header #logo {
+    width: 40px;
+}
+
 /* zip code input */
 .search {
     height: 7vh;
+    position: relative;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    z-index: 999;
 }
+#zipInput {
+    border: none;
+    border-bottom: 1px solid #b4b4b4;
+    grid-column: 1/8;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+#zipInput::placeholder {
+    color: #707070;
+}
+.search select {
+    grid-column: 8/11;
+    border: none;
+    border-bottom: 1px solid #b4b4b4;
+    text-align-last: center;
+    color: #707070;
+    -webkit-appearance: none; /* Safari and Chrome */
+}
+.search #btn {
+    grid-column: 11/13;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #b4b4b4;
+}
+.search #btn img {
+    width: 25px;
+}
+
 /* map */
 #mapid {
     height: 30vh;
 }
+
 /* list of locations */
 .location-list {
     height: 53vh;

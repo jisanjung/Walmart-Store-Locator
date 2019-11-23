@@ -9,26 +9,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
     </head>
     <body>
         <!--header-->
-        <header class="test">
-            <div class="logo"><img src="images/icons8-walmart-48.png" alt="Walmart Logo"></div>
+        <header>
+            <div class="container">
+                <div class="logo vertical-center"><img src="images/icons8-walmart-48.png" alt="Walmart Logo" id="logo"></div>
+            </div>
         </header>
 
         <!--zip code input-->
-        <div class="search test">
-            <input type="text" placeholder="Enter Zip Code" pattern="[0-9]{5}" id="zipInput">
-            <button type="button" id="btn">search</button>
+        <div class="search">
+            <div class="center-all grid-wrap container">
+                <input type="text" placeholder="Enter Zip Code" pattern="[0-9]{5}" id="zipInput">
+                <select>
+                    <option value="5">5 miles</option>
+                    <option value="10">10 miles</option>
+                    <option value="25">25 miles</option>
+                </select>
+                <button type="button" id="btn"><img src="images/icons8-search-30 (1).png" alt="Search Button"></button>
+            </div>
         </div>
 
         <!--map-->
-        <div id="mapid" class="test"></div>
+        <div id="mapid"></div>
 
         <!--list of locations-->
         <div class="location-list test"></div>
 
         <!--javascript-->
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
         <script src="script.js"></script>
     </body>
 </html>
