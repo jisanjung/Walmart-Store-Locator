@@ -4,6 +4,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Source Sans Pro', sans-serif;
+    color: #707070;
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 .grid-wrap {
     overflow: hidden;
@@ -42,7 +47,17 @@ header {
     position: relative;
 }
 header #logo {
-    width: 40px;
+    width: 32px;
+}
+header .container div {
+    width: 100%;
+}
+header .container div h1 {
+    float: left;
+    color: #fff;
+    margin-right: 3px;
+    font-weight: normal;
+    font-size: 24px;
 }
 
 /* zip code input */
@@ -84,10 +99,17 @@ header #logo {
 /* map */
 #mapid {
     height: 30vh;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* list of locations */
 .location-list {
     height: 53vh;
-    overflow: scroll;
+    overflow-y: scroll;
+    position: relative;
+}
+.location-list p {
+    text-align: center;
+    font-size: 18px;
+    color: #939393 !important;
 }
