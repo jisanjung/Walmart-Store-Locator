@@ -1,5 +1,8 @@
 "use strict";
 
+// global variables
+var closestZips = [];
+
 // initialize map view when page loads
 function initMap() {
     var mobile = window.matchMedia("(max-width: 768px)");
@@ -27,7 +30,7 @@ function getURL() {
     var zip = document.getElementById("zipInput").value;
     var select = document.getElementById("selectMiles");
     var mileRad = select.options[select.selectedIndex].value;
-    var url = "https://www.zipcodeapi.com/rest/GmiyTSTTuReA0ppnY5NodOpUIjuC1TBX4zf9zVGMsYjkReSFb8AJLdhSJAHqn27M/radius.json/" + zip + "/" + mileRad + "/mile";
+    var url = "https://cors-anywhere.herokuapp.com/http://www.zipcodeapi.com/rest/nRkA21zrlgE0bPUQ0SMWsWi1aOJVxUiorurMuhe8gkR0AsrqneexnYJhhRKFgdUA/radius.json/" + zip + "/" + mileRad + "/mile";
 
     return url;
 }
@@ -47,5 +50,52 @@ function validZip() {
     }
 }
 
+// call this when there is an error
+function errorHandle() {
+    document.getElementById("zipInput").style.border = "solid 2px #ff0000";
+
+    return "Invalid Zip Code";
+}
+
+// call this when request is successful
+function clearError() {
+    var zipInput = document.getElementById("zipInput");
+    zipInput.style.borderTop = "none";
+    zipInput.style.borderRight = "none";
+    zipInput.style.borderLeft = "none";
+    zipInput.style.borderBottom = "solid 1px #b4b4b4";
+    document.getElementById("error").innerHTML = "";
+}
+
+// find closest locations and push objects to closestZips
+function zipRad() {
+    var url = getURL(); // zip code api endpoint
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+            // if readyState repsonse is ready and status is "OK"
+            document.querySelector(".location-list").innerHTML = this.responseText;
+        } else {
+            console.log("error");
+        }
+    };
+    xhr.open("GET", url, true);
+    xhr.send();
+}
+
+// event listeners
+function createEventListeners() {
+    var search = document.getElementById("btn");
+
+    if (search.addEventListener) {
+        search.addEventListener("click", zipRad, false);
+    } else if (search.attachEvent) {
+        search.attachEvent("onclick", zipRad);
+    }
+}
+
 // global function calls
 initMap();
+createEventListeners();
