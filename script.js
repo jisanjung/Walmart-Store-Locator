@@ -52,7 +52,7 @@ function validZip() {
 
 // call this when there is an error
 function errorHandle() {
-    document.getElementById("zipInput").style.border = "solid 2px #ff0000";
+    document.getElementById("zipInput").style.border = "solid 1px #ff0000";
 
     return "Invalid Zip Code";
 }
@@ -70,15 +70,29 @@ function clearError() {
 // find closest locations and push objects to closestZips
 function zipRad() {
     var url = getURL(); // zip code api endpoint
+    var error = errorHandle();
     var xhr = new XMLHttpRequest();
+    var apiData;
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
             // if readyState repsonse is ready and status is "OK"
-            document.querySelector(".location-list").innerHTML = this.responseText;
+            // push apiData into closestZips array
+            apiData = JSON.parse(this.responseText);
+            for (var i = 0; i < apiData.zip_codes.length; i++) {
+                closestZips.push(apiData.zip_codes[i]);
+            }
+            // clear input
+            document.getElementById("zipInput").value = "";
+
+            // throw error if zipcode is not valid
+        } else if (!validZip || this.status == 400 || this.status == 404) {
+            errorHandle();
+            document.getElementById("error").innerHTML = error;
         } else {
-            console.log("error");
+            // clear error
+            clearError();
         }
     };
     xhr.open("GET", url, true);
