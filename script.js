@@ -2,6 +2,8 @@
 
 // global variables
 var closestZips = [];
+var allWalmartStores = [];
+var closestStores = [];
 
 // initialize map view when page loads
 function initMap() {
@@ -72,16 +74,16 @@ function zipRad() {
     var url = getURL(); // zip code api endpoint
     var error = errorHandle();
     var xhr = new XMLHttpRequest();
-    var apiData;
+    var zipData;
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
             // if readyState repsonse is ready and status is "OK"
-            // push apiData into closestZips array
-            apiData = JSON.parse(this.responseText);
-            for (var i = 0; i < apiData.zip_codes.length; i++) {
-                closestZips.push(apiData.zip_codes[i]);
+            // push zipData into closestZips array
+            zipData = JSON.parse(this.responseText);
+            for (var i = 0; i < zipData.zip_codes.length; i++) {
+                closestZips.push(zipData.zip_codes[i]);
             }
             // clear input
             document.getElementById("zipInput").value = "";
@@ -97,6 +99,31 @@ function zipRad() {
     };
     xhr.open("GET", url, true);
     xhr.send();
+}
+
+// pushes every walmart store into allWalmartStores
+function walmartStores() {
+    var xhr = new XMLHttpRequest();
+    var walmartData;
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+            // if readyState repsonse is ready and status is "OK"
+            // push walmartData into allWalmartStores array
+            walmartData = JSON.parse(this.responseText);
+            for (var i = 0; i < walmartData.length; i++) {
+                allWalmartStores.push(walmartData[i]);
+            }
+        }
+    };
+    xhr.open("GET", "https://gist.githubusercontent.com/anonymous/83803696b0e3430a52f1/raw/29f2b252981659dfa6ad51922c8155e66ac261b2/walmart.json", true);
+    xhr.send();
+}
+
+// find the closest walmart by filtering allWalmartStores with closestZips
+function findClosestStores() {
+    
 }
 
 // event listeners
