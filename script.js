@@ -69,6 +69,17 @@ function clearError() {
     document.getElementById("error").innerHTML = "";
 }
 
+// loading screen 
+var loading = {
+    loadScreen: document.querySelector(".loading"),
+    on: function() {
+        this.loadScreen.style.display = "block";
+    },
+    off: function() {
+        this.loadScreen.style.display = "none";
+    }
+};
+
 // find closest locations and push objects to closestZips
 function zipRad() {
     var url = getURL(); // zip code api endpoint
@@ -87,6 +98,8 @@ function zipRad() {
             }
             // clear input
             document.getElementById("zipInput").value = "";
+            // loading screen off after finishing request
+            loading.off();
 
             // throw error if zipcode is not valid
         } else if (!validZip || this.status == 400 || this.status == 404) {
@@ -98,6 +111,8 @@ function zipRad() {
         }
     };
     xhr.open("GET", url, true);
+    // loading screen on while getting request
+    loading.on();
     xhr.send();
 }
 
@@ -115,9 +130,13 @@ function walmartStores() {
             for (var i = 0; i < walmartData.length; i++) {
                 allWalmartStores.push(walmartData[i]);
             }
+            // loading screen off after finishing request
+            loading.off();
         }
     };
     xhr.open("GET", "https://gist.githubusercontent.com/anonymous/83803696b0e3430a52f1/raw/29f2b252981659dfa6ad51922c8155e66ac261b2/walmart.json", true);
+    // loading screen on while getting request
+    loading.on();
     xhr.send();
 }
 
