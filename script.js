@@ -32,7 +32,7 @@ function getURL() {
     var zip = document.getElementById("zipInput").value;
     var select = document.getElementById("selectMiles");
     var mileRad = select.options[select.selectedIndex].value;
-    var url = "http://www.zipcodeapi.com/rest/nRkA21zrlgE0bPUQ0SMWsWi1aOJVxUiorurMuhe8gkR0AsrqneexnYJhhRKFgdUA/radius.json/" + zip + "/" + mileRad + "/mile";
+    var url = "https://cors-anywhere.herokuapp.com/http://www.zipcodeapi.com/rest/nRkA21zrlgE0bPUQ0SMWsWi1aOJVxUiorurMuhe8gkR0AsrqneexnYJhhRKFgdUA/radius.json/" + zip + "/" + mileRad + "/mile";
 
     return url;
 }
@@ -123,21 +123,20 @@ function walmartStores() {
 
 // find the closest walmart by filtering allWalmartStores with closestZips
 function findClosestStores() {
-    // for (var i = 0; i < allWalmartStores.length; i++) {
-    //     for (var j = 0; j < closestZips.length; j++) {    
-    //         if (allWalmartStores[i].postalCode == closestZips[j].zip_code) {
-    //             closestStores.push(allWalmartStores[i]);
-    //         }
-    //     }
-    // }
-    closestStores.push(1);
+    for (var i = 0; i < allWalmartStores.length; i++) {
+        for (var a = 0; a < closestZips.length; a++) {
+            if (allWalmartStores[i].postalCode === closestZips[a].zip_code) {
+                closestStores.push(allWalmartStores[i]);
+            }
+        }
+    }
 }
 
 // call other functions in order here
 function loadDoc() {
     zipRad();
     walmartStores();
-    findClosestStores();
+    setTimeout(findClosestStores, 2000);
 }
 
 // event listeners
