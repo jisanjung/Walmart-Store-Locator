@@ -84,7 +84,7 @@ var loading = {
 function reloadOnce() {
     if(!window.location.hash) {
         window.location = window.location + '#loaded';
-        window.location.reload();
+        window.location.reload(true);
     }
 }
 
@@ -93,14 +93,13 @@ function zipRad() {
     var url = getURL(); // zip code api endpoint
     var error = errorHandle();
     var xhr = new XMLHttpRequest();
-    var zipData;
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
             // if readyState repsonse is ready and status is "OK"
             // push zipData into closestZips array
-            zipData = JSON.parse(this.responseText);
+            var zipData = JSON.parse(this.responseText);
             for (var i = 0; i < zipData.zip_codes.length; i++) {
                 closestZips.push(zipData.zip_codes[i]);
             }
@@ -123,14 +122,13 @@ function zipRad() {
 // pushes every walmart store into allWalmartStores
 function walmartStores() {
     var xhr = new XMLHttpRequest();
-    var walmartData;
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
             // if readyState repsonse is ready and status is "OK"
             // push walmartData into allWalmartStores array
-            walmartData = JSON.parse(this.responseText);
+            var walmartData = JSON.parse(this.responseText);
             for (var i = 0; i < walmartData.length; i++) {
                 allWalmartStores.push(walmartData[i]);
             }
