@@ -140,6 +140,7 @@ header .container div h1 {
     background-repeat: no-repeat;
 }
 
+
 /* media queries */
 @media screen and (min-width: 1024px) {
     /* header */

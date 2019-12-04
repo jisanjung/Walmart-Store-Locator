@@ -80,6 +80,14 @@ var loading = {
     }
 };
 
+// reload the page only one time
+function reloadOnce() {
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
+}
+
 // find closest locations and push objects to closestZips
 function zipRad() {
     var url = getURL(); // zip code api endpoint
@@ -98,8 +106,6 @@ function zipRad() {
             }
             // clear input
             document.getElementById("zipInput").value = "";
-            // loading screen off after finishing request
-            loading.off();
 
             // throw error if zipcode is not valid
         } else if (!validZip || this.status == 400 || this.status == 404) {
@@ -111,8 +117,6 @@ function zipRad() {
         }
     };
     xhr.open("GET", url, true);
-    // loading screen on while getting request
-    loading.on();
     xhr.send();
 }
 
@@ -130,13 +134,9 @@ function walmartStores() {
             for (var i = 0; i < walmartData.length; i++) {
                 allWalmartStores.push(walmartData[i]);
             }
-            // loading screen off after finishing request
-            loading.off();
         }
     };
     xhr.open("GET", "https://gist.githubusercontent.com/anonymous/83803696b0e3430a52f1/raw/29f2b252981659dfa6ad51922c8155e66ac261b2/walmart.json", true);
-    // loading screen on while getting request
-    loading.on();
     xhr.send();
 }
 
@@ -149,13 +149,20 @@ function findClosestStores() {
             }
         }
     }
+    for (var j = 0; j < closestStores.length; j++) {
+        console.log(closestStores[j]); // test
+    }
+
+    // once everything has loaded, turn loading screen off
+    loading.off();
 }
 
 // call other functions in order here
 function loadDoc() {
+    loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
-    setTimeout(findClosestStores, 2000);
+    setTimeout(findClosestStores, 3000);
 }
 
 // event listeners
@@ -166,6 +173,13 @@ function createEventListeners() {
         search.addEventListener("click", loadDoc, false);
     } else if (search.attachEvent) {
         search.attachEvent("onclick", loadDoc);
+    }
+
+    // reload page once incase of issues
+    if (window.addEventListener) {
+        window.addEventListener("load", reloadOnce, false);
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", reloadOnce);
     }
 }
 
