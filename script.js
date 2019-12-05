@@ -147,7 +147,8 @@ function findClosestStores() {
         for (var a = 0; a < closestZips.length; a++) {
             if (allWalmartStores[i].postalCode === closestZips[a].zip_code) {
                 closestStores.push(allWalmartStores[i]);
-                distances.push(closestZips[a].distance);
+                // distances between user's zip and store location
+                distances.push(closestZips[a].distance.toFixed(2));
             }
         }
     }
@@ -168,11 +169,10 @@ function display() {
         var li = document.createElement("li");
         var city = closestStores[i].city;
         var name = closestStores[i].name;
-        var zip = closestStores[i].postalCode;
         var address = closestStores[i].address1;
         var phone = closestStores[i].phone_number;
         // values for text node goes into array
-        var textNodes = [city, name, address, phone];
+        var textNodes = [city, name, address, phone, distances[i]];
 
         // create p elements with values, then append inside li element
         // then append li elements to ul element
@@ -190,12 +190,22 @@ function display() {
     closestStores = [];
 }
 
+// clear items in the DOM and display new results
+function replace() {
+    var li = document.querySelector("#stores li");
+    if (li) {
+        document.getElementById("stores").innerHTML = "";
+        display();
+    }
+}
+
 // call other functions in order here
 function loadDoc() {
     loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
     setTimeout(findClosestStores, 3000);
+    replace();
 }
 
 // event listeners
