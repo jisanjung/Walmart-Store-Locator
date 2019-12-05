@@ -4,6 +4,7 @@
 var closestZips = [];
 var allWalmartStores = [];
 var closestStores = [];
+var distances = [];
 
 // initialize map view when page loads
 function initMap() {
@@ -140,19 +141,53 @@ function walmartStores() {
 
 // find the closest walmart by filtering allWalmartStores with closestZips
 function findClosestStores() {
+
+    // filters thru 2 arrays and finds closest walmart store
     for (var i = 0; i < allWalmartStores.length; i++) {
         for (var a = 0; a < closestZips.length; a++) {
             if (allWalmartStores[i].postalCode === closestZips[a].zip_code) {
                 closestStores.push(allWalmartStores[i]);
+                distances.push(closestZips[a].distance);
             }
         }
     }
-    for (var j = 0; j < closestStores.length; j++) {
-        console.log(closestStores[j]); // test
-    }
+
+    // hide the pre text
+    document.querySelector(".pre-text").style.display = "none";
+
+    // output results to DOM
+    display();
 
     // once everything has loaded, turn loading screen off
     loading.off();
+}
+
+// output results to DOM
+function display() {
+    for (var i = 0; i < closestStores.length; i++) {
+        var li = document.createElement("li");
+        var city = closestStores[i].city;
+        var name = closestStores[i].name;
+        var zip = closestStores[i].postalCode;
+        var address = closestStores[i].address1;
+        var phone = closestStores[i].phone_number;
+        // values for text node goes into array
+        var textNodes = [city, name, address, phone];
+
+        // create p elements with values, then append inside li element
+        // then append li elements to ul element
+        for (var k = 0; k < textNodes.length; k++) {
+            var p = document.createElement("p");
+            var text = document.createTextNode(textNodes[k]);
+            p.appendChild(text);
+            li.appendChild(p);
+            document.getElementById("stores").appendChild(li);
+        }
+    }
+    // clear arrays once data is present in DOM
+    closestZips = [];
+    allWalmartStores = [];
+    closestStores = [];
 }
 
 // call other functions in order here

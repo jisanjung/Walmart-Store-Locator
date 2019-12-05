@@ -139,6 +139,27 @@ header .container div h1 {
     background-color: rgba(255, 255, 255, 0.8);
     background-repeat: no-repeat;
 }
+#stores {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.location-list #stores li {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    list-style: none;
+}
+.location-list #stores li:hover {
+    background-color: #eee;
+    transition: 0.2s;
+}
+.location-list #stores li p {
+    text-align: left;
+    font-size: 16px;
+    color: #000 !important;
+}
+.location-list #stores li p:first-child {
+    font-weight: bold;
+}
 
 /* media queries */
 @media screen and (min-width: 1024px) {
@@ -161,6 +182,9 @@ header .container div h1 {
         grid-column: 1/6;
         grid-row: 3/10;
         height: 80vh;
+    }
+    #stores {
+        padding-top: 0;
     }
 
     /* map */
