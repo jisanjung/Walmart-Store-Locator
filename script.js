@@ -1,6 +1,8 @@
 "use strict";
 
 // global variables
+var map;
+var marker;
 var closestZips = [];
 var allWalmartStores = [];
 var closestStores = [];
@@ -13,14 +15,14 @@ function initMap() {
     if (mobile.matches) {
         // sets the view to the center of the united states
         //zoom level is 2 on mobile
-        var map = L.map('mapid').setView([39.8283, -98.5795], 2);
+        map = L.map('mapid').setView([39.8283, -98.5795], 2);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     } else {
         // sets the view to the center of the united states
          //zoom level is 3 on desktop
-        var map = L.map('mapid').setView([39.8283, -98.5795], 3);
+        map = L.map('mapid').setView([39.8283, -98.5795], 3);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
@@ -157,7 +159,13 @@ function findClosestStores() {
     document.querySelector(".pre-text").style.display = "none";
 
     // output results to DOM
-    display();
+    var li = document.querySelector("#stores li");
+    if (!li) {
+        display();
+    } else {
+        document.getElementById("stores").innerHTML = "";
+        display();
+    }
 
     // once everything has loaded, turn loading screen off
     loading.off();
@@ -184,10 +192,12 @@ function display() {
             document.getElementById("stores").appendChild(li);
         }
     }
+    setMap();
     // clear arrays once data is present in DOM
-    closestZips = [];
-    allWalmartStores = [];
-    closestStores = [];
+    // closestZips = [];
+    // allWalmartStores = [];
+    // closestStores = [];
+    // distances = [];
 }
 
 // clear items in the DOM and display new results
@@ -195,8 +205,35 @@ function replace() {
     var li = document.querySelector("#stores li");
     if (li) {
         document.getElementById("stores").innerHTML = "";
+        //display();
+    } else {
         display();
     }
+}
+
+// change map view and add markers based on location
+function setMap() {
+    // smallest number of array
+    var smallestMileRad = Math.min.apply(null, distances);
+
+    // zoom in closer to map based on location
+    map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
+
+    // add markers
+    for (var k = 0; k < closestStores.length; k++) {
+        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
+        .openPopup();
+    }
+}
+
+function centerOnClick() {
+    var index = $("#stores li").index(this);
+    
+    marker = new L.marker([closestStores[index].latitude, closestStores[index].longitude]).addTo(map)
+    .bindPopup(closestStores[index].address1)
+    .openPopup();
+
+    map.setView(new L.LatLng(closestStores[index].latitude, closestStores[index].longitude), 13);
 }
 
 // call other functions in order here
@@ -205,7 +242,12 @@ function loadDoc() {
     zipRad();
     walmartStores();
     setTimeout(findClosestStores, 3000);
-    replace();
+    //replace();
+
+    closestZips = [];
+    allWalmartStores = [];
+    closestStores = [];
+    distances = [];
 }
 
 // event listeners
@@ -224,6 +266,10 @@ function createEventListeners() {
     } else if (window.attachEvent) {
         window.attachEvent("onload", reloadOnce);
     }
+
+    // when a store is clicked in the list of stores,
+    // center the view to that store
+    $("body").on("click", "#stores li", centerOnClick);
 }
 
 // global function calls
