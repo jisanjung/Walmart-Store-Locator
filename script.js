@@ -158,9 +158,10 @@ function findClosestStores() {
     // hide the pre text
     document.querySelector(".pre-text").style.display = "none";
 
+    //check if element exists, if not
     // output results to DOM
-    var li = document.querySelector("#stores li");
-    if (!li) {
+    var li = $("#stores li");
+    if (li.length === 0) {
         display();
     } else {
         document.getElementById("stores").innerHTML = "";
@@ -193,22 +194,6 @@ function display() {
         }
     }
     setMap();
-    // clear arrays once data is present in DOM
-    // closestZips = [];
-    // allWalmartStores = [];
-    // closestStores = [];
-    // distances = [];
-}
-
-// clear items in the DOM and display new results
-function replace() {
-    var li = document.querySelector("#stores li");
-    if (li) {
-        document.getElementById("stores").innerHTML = "";
-        //display();
-    } else {
-        display();
-    }
 }
 
 // change map view and add markers based on location
@@ -226,6 +211,7 @@ function setMap() {
     }
 }
 
+// center map to targeted list item, when clicked
 function centerOnClick() {
     var index = $("#stores li").index(this);
     
@@ -236,18 +222,20 @@ function centerOnClick() {
     map.setView(new L.LatLng(closestStores[index].latitude, closestStores[index].longitude), 13);
 }
 
+function resetArrays() {
+    closestZips = [];
+    allWalmartStores = [];
+    closestStores = [];
+    distances = [];
+}
+
 // call other functions in order here
 function loadDoc() {
     loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
     setTimeout(findClosestStores, 3000);
-    //replace();
-
-    closestZips = [];
-    allWalmartStores = [];
-    closestStores = [];
-    distances = [];
+    resetArrays();
 }
 
 // event listeners
