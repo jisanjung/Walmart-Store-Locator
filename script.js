@@ -205,9 +205,15 @@ function setMap() {
     map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
 
     // add markers
+    // var markerGroup = L.layerGroup().addTo(map);
+    // markerGroup.clearLayers();
+
     for (var k = 0; k < closestStores.length; k++) {
-        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
-        .openPopup();
+        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
+        // .openPopup();
+
+        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
+        markerGroup.addLayer(marker);
     }
 }
 
@@ -231,6 +237,7 @@ function resetArrays() {
 
 // call other functions in order here
 function loadDoc() {
+    markerGroup.clearLayers(); // clear markers before adding new
     loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
@@ -262,4 +269,5 @@ function createEventListeners() {
 
 // global function calls
 initMap();
+var markerGroup = L.layerGroup().addTo(map); // must be initialized after setting map
 createEventListeners();
