@@ -191,7 +191,6 @@ header .container div h1 {
 .location-list #stores li:hover {
     background-color: #eee;
     transition: 0.2s;
-    cursor: pointer;
 }
 .location-list #stores li p {
     text-align: left;
