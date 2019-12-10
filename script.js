@@ -82,16 +82,6 @@ var loading = {
         this.loadScreen.style.display = "none";
     }
 };
-// too many requests error
-var requestError = {
-    appear: function() {
-        document.querySelector(".request-error").style.transform = "translateY(0px)";
-    },
-    close: function() {
-        document.querySelector(".request-error").style.transform = "translateY(-50px)";
-        location.reload();
-    }
-};
 
 // reload the page only one time
 function reloadOnce() {
@@ -123,9 +113,6 @@ function zipRad() {
         } else if (!validZip || this.status == 400 || this.status == 404) {
             errorHandle();
             document.getElementById("error").innerHTML = error;
-        } else if (this.status == 429) {
-            loading.off();
-            requestError.appear();
         } else {
             // clear error
             clearError();
@@ -219,14 +206,13 @@ function setMap() {
 
     // add markers
     // var markerGroup = L.layerGroup().addTo(map);
-    // markerGroup.clearLayers();
+    markerGroup.clearLayers();
 
     for (var k = 0; k < closestStores.length; k++) {
-        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
-        // .openPopup();
-
-        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
-        markerGroup.addLayer(marker);
+        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
+        .openPopup();
+        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
+        // markerGroup.addLayer(marker);
     }
 }
 
@@ -250,7 +236,6 @@ function resetArrays() {
 
 // call other functions in order here
 function loadDoc() {
-    markerGroup.clearLayers(); // clear markers before adding new
     loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
@@ -261,7 +246,6 @@ function loadDoc() {
 // event listeners
 function createEventListeners() {
     var search = document.getElementById("btn");
-    var close = document.getElementById("close");
 
     if (search.addEventListener) {
         search.addEventListener("click", loadDoc, false);
@@ -279,15 +263,8 @@ function createEventListeners() {
     // when a store is clicked in the list of stores,
     // center the view to that store
     $("body").on("click", "#stores li", centerOnClick);
-
-    if (close.addEventListener) {
-        close.addEventListener("click", requestError.close, false);
-    } else if (close.attachEvent) {
-        close.attachEvent("click", requestError.close);
-    }
 }
 
 // global function calls
 initMap();
-var markerGroup = L.layerGroup().addTo(map); // must be initialized after setting map
 createEventListeners();
