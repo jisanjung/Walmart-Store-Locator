@@ -220,6 +220,7 @@ function setMap() {
     map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
 
     // add markers
+<<<<<<< HEAD
     // var markerGroup = L.layerGroup().addTo(map);
     markerGroup.clearLayers();
 
@@ -228,6 +229,11 @@ function setMap() {
         .openPopup();
         // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
         // markerGroup.addLayer(marker);
+=======
+    for (var k = 0; k < closestStores.length; k++) {
+        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
+        .openPopup();
+>>>>>>> parent of 674751b... fixed some map bugs
     }
 }
 
