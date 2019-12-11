@@ -82,6 +82,16 @@ var loading = {
         this.loadScreen.style.display = "none";
     }
 };
+// too many requests error
+var requestError = {
+    appear: function() {
+        document.querySelector(".request-error").style.transform = "translateY(0px)";
+    },
+    close: function() {
+        document.querySelector(".request-error").style.transform = "translateY(-50px)";
+        location.reload();
+    }
+};
 
 // reload the page only one time
 function reloadOnce() {
@@ -113,6 +123,9 @@ function zipRad() {
         } else if (!validZip || this.status == 400 || this.status == 404) {
             errorHandle();
             document.getElementById("error").innerHTML = error;
+        } else if (this.status == 429) {
+            loading.off();
+            requestError.appear();
         } else {
             // clear error
             clearError();
@@ -158,9 +171,10 @@ function findClosestStores() {
     // hide the pre text
     document.querySelector(".pre-text").style.display = "none";
 
+    //check if element exists, if not
     // output results to DOM
-    var li = document.querySelector("#stores li");
-    if (!li) {
+    var li = $("#stores li");
+    if (li.length === 0) {
         display();
     } else {
         document.getElementById("stores").innerHTML = "";
@@ -193,22 +207,6 @@ function display() {
         }
     }
     setMap();
-    // clear arrays once data is present in DOM
-    // closestZips = [];
-    // allWalmartStores = [];
-    // closestStores = [];
-    // distances = [];
-}
-
-// clear items in the DOM and display new results
-function replace() {
-    var li = document.querySelector("#stores li");
-    if (li) {
-        document.getElementById("stores").innerHTML = "";
-        //display();
-    } else {
-        display();
-    }
 }
 
 // change map view and add markers based on location
@@ -220,23 +218,19 @@ function setMap() {
     map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
 
     // add markers
-<<<<<<< HEAD
     // var markerGroup = L.layerGroup().addTo(map);
-    markerGroup.clearLayers();
+    // markerGroup.clearLayers();
 
     for (var k = 0; k < closestStores.length; k++) {
-        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
-        .openPopup();
-        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
-        // markerGroup.addLayer(marker);
-=======
-    for (var k = 0; k < closestStores.length; k++) {
-        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
-        .openPopup();
->>>>>>> parent of 674751b... fixed some map bugs
+        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
+        // .openPopup();
+
+        marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
+        markerGroup.addLayer(marker);
     }
 }
 
+// center map to targeted list item, when clicked
 function centerOnClick() {
     var index = $("#stores li").index(this);
     
@@ -247,23 +241,27 @@ function centerOnClick() {
     map.setView(new L.LatLng(closestStores[index].latitude, closestStores[index].longitude), 13);
 }
 
-// call other functions in order here
-function loadDoc() {
-    loading.on(); // on button click, turn on loading screen
-    zipRad();
-    walmartStores();
-    setTimeout(findClosestStores, 3000);
-    //replace();
-
+function resetArrays() {
     closestZips = [];
     allWalmartStores = [];
     closestStores = [];
     distances = [];
 }
 
+// call other functions in order here
+function loadDoc() {
+    markerGroup.clearLayers(); // clear markers before adding new
+    loading.on(); // on button click, turn on loading screen
+    zipRad();
+    walmartStores();
+    setTimeout(findClosestStores, 3000);
+    resetArrays();
+}
+
 // event listeners
 function createEventListeners() {
     var search = document.getElementById("btn");
+    var close = document.getElementById("close");
 
     if (search.addEventListener) {
         search.addEventListener("click", loadDoc, false);
@@ -281,8 +279,15 @@ function createEventListeners() {
     // when a store is clicked in the list of stores,
     // center the view to that store
     $("body").on("click", "#stores li", centerOnClick);
+
+    if (close.addEventListener) {
+        close.addEventListener("click", requestError.close, false);
+    } else if (close.attachEvent) {
+        close.attachEvent("click", requestError.close);
+    }
 }
 
 // global function calls
 initMap();
+var markerGroup = L.layerGroup().addTo(map); // must be initialized after setting map
 createEventListeners();
