@@ -7,6 +7,8 @@
         <title>Walmart Store Locator</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Cache-control" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
         <link rel="stylesheet" href="style.css" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -16,6 +18,8 @@
     <body>
         <!--header-->
         <header>
+            <!--request-error-->
+            <div class="request-error"><span>Too many requests. Please try again later.</span><button type="button"><img src="images/icons8-delete-24.png" alt="close" id="close"></button></div>
             <div class="container">
                 <div class="vertical-center"><h1>Walmart</h1><img src="images/icons8-walmart-48.png" alt="Walmart Logo" id="logo"></div>
             </div>
