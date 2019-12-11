@@ -59,39 +59,6 @@ header .container div h1 {
     font-weight: normal;
     font-size: 24px;
 }
-.request-error {
-    width: 100%;
-    height: 50px;
-    transform: translateY(-50px);
-    transition: 0.2s linear;
-    background-color: #ff0000;
-    text-align: center;
-    color: #fff;
-    z-index: 1000;
-    position: absolute;
-}
-.request-error span {
-    position: absolute;
-    color: #fff;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.request-error button {
-    float: right;
-    background-color: transparent;
-    border: none;
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.request-error img {
-    width: 20px;
-}
-.request-error button:hover {
-    cursor: pointer;
-}
 
 /* zip code input */
 .search {
