@@ -40,21 +40,6 @@ function getURL() {
     return url;
 }
 
-// checks zip code matches regular expression
-function validZip() {
-    var url = getURL();
-    var searchIndex = url.search("zipcode=");
-    var subString = url.substring(searchIndex + 8, 116);
-
-    var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(subString);
-
-    if (isValidZip) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 // call this when there is an error
 function errorHandle() {
     document.getElementById("zipInput").style.border = "solid 1px #ff0000";
@@ -106,6 +91,7 @@ function zipRad() {
     var url = getURL(); // zip code api endpoint
     var error = errorHandle();
     var xhr = new XMLHttpRequest();
+    var input = document.getElementById("zipInput").value;
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -118,9 +104,10 @@ function zipRad() {
             }
             // clear input
             document.getElementById("zipInput").value = "";
+            clearError();
 
             // throw error if zipcode is not valid
-        } else if (!validZip || this.status == 400 || this.status == 404) {
+        } else if (input === "" || !/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(input)) {
             errorHandle();
             document.getElementById("error").innerHTML = error;
         } else if (this.status == 429) {
