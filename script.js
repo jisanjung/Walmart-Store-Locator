@@ -35,7 +35,7 @@ function getURL() {
     var zip = document.getElementById("zipInput").value;
     var select = document.getElementById("selectMiles");
     var mileRad = select.options[select.selectedIndex].value;
-    var url = "https://cors-anywhere.herokuapp.com/http://www.zipcodeapi.com/rest/nRkA21zrlgE0bPUQ0SMWsWi1aOJVxUiorurMuhe8gkR0AsrqneexnYJhhRKFgdUA/radius.json/" + zip + "/" + mileRad + "/mile";
+    var url = "https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius?zipcode=" + zip + "&minimumradius=0&maximumradius=" + mileRad + "&key=KJUOH0TRE1UOXU7FMCD9";
 
     return url;
 }
@@ -43,8 +43,8 @@ function getURL() {
 // checks zip code matches regular expression
 function validZip() {
     var url = getURL();
-    var searchIndex = url.search("radius.json/");
-    var subString = url.substring(searchIndex + 12, 114);
+    var searchIndex = url.search("zipcode=");
+    var subString = url.substring(searchIndex + 8, 116);
 
     var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(subString);
 
@@ -113,8 +113,8 @@ function zipRad() {
             // if readyState repsonse is ready and status is "OK"
             // push zipData into closestZips array
             var zipData = JSON.parse(this.responseText);
-            for (var i = 0; i < zipData.zip_codes.length; i++) {
-                closestZips.push(zipData.zip_codes[i]);
+            for (var i = 0; i < zipData.DataList.length; i++) {
+                closestZips.push(zipData.DataList[i]);
             }
             // clear input
             document.getElementById("zipInput").value = "";
@@ -160,10 +160,10 @@ function findClosestStores() {
     // filters thru 2 arrays and finds closest walmart store
     for (var i = 0; i < allWalmartStores.length; i++) {
         for (var a = 0; a < closestZips.length; a++) {
-            if (allWalmartStores[i].postalCode === closestZips[a].zip_code) {
+            if (allWalmartStores[i].postalCode === closestZips[a].Code) {
                 closestStores.push(allWalmartStores[i]);
                 // distances between user's zip and store location
-                distances.push(closestZips[a].distance.toFixed(2));
+                distances.push(closestZips[a].Distance);
             }
         }
     }
@@ -254,7 +254,7 @@ function loadDoc() {
     loading.on(); // on button click, turn on loading screen
     zipRad();
     walmartStores();
-    setTimeout(findClosestStores, 3000);
+    setTimeout(findClosestStores, 2000);
     resetArrays();
 }
 
