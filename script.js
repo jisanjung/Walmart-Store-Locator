@@ -193,6 +193,14 @@ function display() {
             document.getElementById("stores").appendChild(li);
         }
     }
+
+    // check if there are any stores nearby
+    if (closestStores.length === 0) {
+        loading.off();
+        document.querySelector(".pre-text").style.display = "block";
+        document.querySelector(".pre-text").innerHTML = "No stores nearby. Try a different mile radius";
+    }
+
     setMap();
 }
 
