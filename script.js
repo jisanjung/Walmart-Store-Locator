@@ -174,6 +174,9 @@ function findClosestStores() {
 
 // output results to DOM
 function display() {
+    var smallestMileRad = Math.min.apply(null, distances);
+    var index = distances.indexOf(smallestMileRad);
+
     for (var i = 0; i < closestStores.length; i++) {
         var li = document.createElement("li");
         var city = closestStores[i].city;
@@ -213,13 +216,7 @@ function setMap() {
     map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
 
     // add markers
-    // var markerGroup = L.layerGroup().addTo(map);
-    // markerGroup.clearLayers();
-
     for (var k = 0; k < closestStores.length; k++) {
-        // marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]).addTo(map)
-        // .openPopup();
-
         marker = new L.marker([closestStores[k].latitude, closestStores[k].longitude]);
         markerGroup.addLayer(marker);
     }
@@ -263,6 +260,15 @@ function createEventListeners() {
     } else if (search.attachEvent) {
         search.attachEvent("onclick", loadDoc);
     }
+
+    // add event when user hits enter key
+    $(document).keypress(function(e) {
+        var key = (e.keyCode ? e.keyCode : e.which);
+        if (key == "13") {
+            e.preventDefault();
+            loadDoc();
+        }
+    });
 
     // reload page once incase of issues
     if (window.addEventListener) {
