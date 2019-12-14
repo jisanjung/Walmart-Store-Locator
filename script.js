@@ -211,9 +211,10 @@ function display() {
 function setMap() {
     // smallest number of array
     var smallestMileRad = Math.min.apply(null, distances);
+    var index = distances.indexOf(smallestMileRad);
 
     // zoom in closer to map based on location
-    map.setView(new L.LatLng(closestStores[0].latitude, closestStores[0].longitude), 10);
+    map.setView(new L.LatLng(closestStores[index.length !== undefined ? index : 0].latitude, closestStores[index.length !== undefined ? index : 0].longitude), 10);
 
     // add markers
     for (var k = 0; k < closestStores.length; k++) {
