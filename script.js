@@ -35,7 +35,7 @@ function getURL() {
     var zip = document.getElementById("zipInput").value;
     var select = document.getElementById("selectMiles");
     var mileRad = select.options[select.selectedIndex].value;
-    var url = "https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius?zipcode=" + zip + "&minimumradius=0&maximumradius=" + mileRad + "&key=KJUOH0TRE1UOXU7FMCD9";
+    var url = "https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius?zipcode=" + zip + "&minimumradius=0&maximumradius=" + mileRad + "&key=S71SJ1GYOPA23ZF25UXL";
 
     return url;
 }
